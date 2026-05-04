@@ -4,6 +4,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import path from 'path';
 import { errors } from 'celebrate';
+import dotenv from 'dotenv';
 
 import productRouter from './routes/product';
 import orderRouter from './routes/order';
@@ -13,7 +14,11 @@ import { errorLogger, requestLogger } from './middlewares/logger';
 
 import { NotFoundError } from './errors-types/not-found-error';
 
+dotenv.config();
 const app = express();
+
+const PORT = Number(process.env.PORT) || 3000;
+const DB_ADDRESS = process.env.DB_ADDRESS || 'mongodb://127.0.0.1:27017/weblarek';
 
 // Тк public хранится на уровень выше
 app.use(express.static(path.join(__dirname, '../public')));
@@ -35,9 +40,9 @@ app.use(errorLogger);
 
 app.use(errorHandler);
 
-mongoose.connect('mongodb://127.0.0.1:27017/weblarek');
+mongoose.connect(DB_ADDRESS);
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.log('Server is running on port 3000');
+  console.log(`Server is running on port ${PORT}`);
 });
