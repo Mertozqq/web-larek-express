@@ -13,16 +13,21 @@ export interface IProduct {
   price?: number | null;
 }
 
-const imageSchema = new Schema<IImage>({
-  fileName: {
-    type: String,
-    required: [true, 'Путь к файлу должен быть указан'],
+const imageSchema = new Schema<IImage>(
+  {
+    fileName: {
+      type: String,
+      required: [true, 'Путь к файлу должен быть указан'],
+    },
+    originalName: {
+      type: String,
+      required: [true, 'Введите имя файла'],
+    },
   },
-  originalName: {
-    type: String,
-    required: [true, 'Введите имя файла'],
+  {
+    _id: false,
   },
-});
+);
 
 const productSchema = new Schema<IProduct>({
   title: {
@@ -50,6 +55,8 @@ const productSchema = new Schema<IProduct>({
     default: null,
   },
 
+}, {
+  versionKey: false,
 });
 
 export default model<IProduct>('product', productSchema);
